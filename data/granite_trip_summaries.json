@@ -1,0 +1,1202 @@
+[
+  {
+    "trip_name": "2017-07-10_Seat_Leon_KA_KA_Stau",
+    "metrics": {
+      "average_speed_kmh": 14.5,
+      "average_rpm": 940.9,
+      "average_fuel_l_100km": 0.47,
+      "high_rpm_low_speed_percent": 0.01,
+      "long_idle_percent": 73.67,
+      "accel_events": 340,
+      "brake_events": 421
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-11_Seat_Leon_KA_KA_Stau",
+    "metrics": {
+      "average_speed_kmh": 23.1,
+      "average_rpm": 1037.7,
+      "average_fuel_l_100km": 0.41,
+      "high_rpm_low_speed_percent": 0.01,
+      "long_idle_percent": 83.35,
+      "accel_events": 421,
+      "brake_events": 444
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-11_Seat_Leon_KA_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 68.2,
+      "average_rpm": 1583.5,
+      "average_fuel_l_100km": 0.28,
+      "high_rpm_low_speed_percent": 0.01,
+      "long_idle_percent": 89.8,
+      "accel_events": 1289,
+      "brake_events": 1180
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-11_Seat_Leon_S_RT_Frei",
+    "metrics": {
+      "average_speed_kmh": 58.3,
+      "average_rpm": 1445.1,
+      "average_fuel_l_100km": 0.27,
+      "high_rpm_low_speed_percent": 0.01,
+      "long_idle_percent": 91.47,
+      "accel_events": 627,
+      "brake_events": 704
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-12_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 52.9,
+      "average_rpm": 1416.8,
+      "average_fuel_l_100km": 0.26,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 89.32,
+      "accel_events": 1169,
+      "brake_events": 1172
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-12_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 59.5,
+      "average_rpm": 1420.5,
+      "average_fuel_l_100km": 0.25,
+      "high_rpm_low_speed_percent": 0.01,
+      "long_idle_percent": 83.63,
+      "accel_events": 720,
+      "brake_events": 758
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-13_Seat_Leon_KA_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 26.1,
+      "average_rpm": 1175.1,
+      "average_fuel_l_100km": 0.41,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 77.33,
+      "accel_events": 337,
+      "brake_events": 314
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-13_Seat_Leon_RT_KA_Stau_Messfehler",
+    "metrics": {
+      "average_speed_kmh": 68.2,
+      "average_rpm": 1490.6,
+      "average_fuel_l_100km": 0.29,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 79.78,
+      "accel_events": 1472,
+      "brake_events": 1508
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-14_Seat_Leon_KA_KA_Frei",
+    "metrics": {
+      "average_speed_kmh": 42.4,
+      "average_rpm": 1409.0,
+      "average_fuel_l_100km": 0.35,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 89.62,
+      "accel_events": 213,
+      "brake_events": 167
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-14_Seat_Leon_KA_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 62.1,
+      "average_rpm": 1509.1,
+      "average_fuel_l_100km": 0.29,
+      "high_rpm_low_speed_percent": 0.01,
+      "long_idle_percent": 89.54,
+      "accel_events": 1521,
+      "brake_events": 1450
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-24_Seat_Leon_RT_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 75.9,
+      "average_rpm": 1635.9,
+      "average_fuel_l_100km": 0.22,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 94.46,
+      "accel_events": 1620,
+      "brake_events": 1614
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-26_Seat_Leon_RT_S_Stau",
+    "metrics": {
+      "average_speed_kmh": 48.7,
+      "average_rpm": 1401.9,
+      "average_fuel_l_100km": 0.31,
+      "high_rpm_low_speed_percent": 0.01,
+      "long_idle_percent": 89.07,
+      "accel_events": 1343,
+      "brake_events": 1427
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-26_Seat_Leon_S_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 65.3,
+      "average_rpm": 1569.2,
+      "average_fuel_l_100km": 0.3,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 85.5,
+      "accel_events": 635,
+      "brake_events": 637
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-27_Seat_Leon_KA_KA_2_Normal",
+    "metrics": {
+      "average_speed_kmh": 24.9,
+      "average_rpm": 1116.8,
+      "average_fuel_l_100km": 0.41,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 76.73,
+      "accel_events": 420,
+      "brake_events": 399
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-27_Seat_Leon_KA_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 33.7,
+      "average_rpm": 1241.0,
+      "average_fuel_l_100km": 0.34,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 79.91,
+      "accel_events": 373,
+      "brake_events": 409
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-28_Seat_Leon_KA_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 32.7,
+      "average_rpm": 1208.6,
+      "average_fuel_l_100km": 0.35,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 74.83,
+      "accel_events": 390,
+      "brake_events": 405
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-28_Seat_Leon_KA_RT_Stau",
+    "metrics": {
+      "average_speed_kmh": 59.0,
+      "average_rpm": 1439.3,
+      "average_fuel_l_100km": 0.27,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 90.3,
+      "accel_events": 1953,
+      "brake_events": 1841
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-31_Seat_Leon_KA_KA_Frei",
+    "metrics": {
+      "average_speed_kmh": 26.8,
+      "average_rpm": 1229.1,
+      "average_fuel_l_100km": 0.37,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 76.56,
+      "accel_events": 275,
+      "brake_events": 271
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-07-31_Seat_Leon_RT_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 75.5,
+      "average_rpm": 1617.1,
+      "average_fuel_l_100km": 0.25,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 90.38,
+      "accel_events": 1633,
+      "brake_events": 1597
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-01_Seat_Leon_KA_KA_Frei",
+    "metrics": {
+      "average_speed_kmh": 31.2,
+      "average_rpm": 1156.8,
+      "average_fuel_l_100km": 0.35,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 87.14,
+      "accel_events": 370,
+      "brake_events": 396
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-01_Seat_Leon_KA_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 73.4,
+      "average_rpm": 1561.9,
+      "average_fuel_l_100km": 0.24,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 89.76,
+      "accel_events": 1194,
+      "brake_events": 1161
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-02_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 59.5,
+      "average_rpm": 1410.3,
+      "average_fuel_l_100km": 0.24,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 86.42,
+      "accel_events": 983,
+      "brake_events": 1002
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-03_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 75.8,
+      "average_rpm": 1523.3,
+      "average_fuel_l_100km": 0.19,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 92.74,
+      "accel_events": 445,
+      "brake_events": 453
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-04_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 71.9,
+      "average_rpm": 1546.3,
+      "average_fuel_l_100km": 0.22,
+      "high_rpm_low_speed_percent": 0.02,
+      "long_idle_percent": 93.26,
+      "accel_events": 703,
+      "brake_events": 692
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-05_Seat_Leon_S_CW_Normal",
+    "metrics": {
+      "average_speed_kmh": 67.4,
+      "average_rpm": 1609.2,
+      "average_fuel_l_100km": 0.22,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 96.94,
+      "accel_events": 1092,
+      "brake_events": 984
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-07_Seat_Leon_KA_RT_Frei",
+    "metrics": {
+      "average_speed_kmh": 90.3,
+      "average_rpm": 1738.9,
+      "average_fuel_l_100km": 0.21,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 93.0,
+      "accel_events": 734,
+      "brake_events": 615
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-07_Seat_Leon_RT_KA_Frei_Vollbremsung",
+    "metrics": {
+      "average_speed_kmh": 80.4,
+      "average_rpm": 1652.6,
+      "average_fuel_l_100km": 0.21,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 92.0,
+      "accel_events": 1100,
+      "brake_events": 1066
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-08_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 65.4,
+      "average_rpm": 1494.9,
+      "average_fuel_l_100km": 0.22,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 94.82,
+      "accel_events": 703,
+      "brake_events": 648
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-08_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 79.6,
+      "average_rpm": 1596.0,
+      "average_fuel_l_100km": 0.18,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 95.26,
+      "accel_events": 498,
+      "brake_events": 469
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-09_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 59.5,
+      "average_rpm": 1470.5,
+      "average_fuel_l_100km": 0.24,
+      "high_rpm_low_speed_percent": 0.01,
+      "long_idle_percent": 89.01,
+      "accel_events": 956,
+      "brake_events": 917
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-09_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 73.5,
+      "average_rpm": 1586.5,
+      "average_fuel_l_100km": 0.2,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 91.62,
+      "accel_events": 545,
+      "brake_events": 565
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-10_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 41.6,
+      "average_rpm": 1378.9,
+      "average_fuel_l_100km": 0.28,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 96.06,
+      "accel_events": 858,
+      "brake_events": 852
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2017-08-10_Seat_Leon_S_RT_Frei",
+    "metrics": {
+      "average_speed_kmh": 83.5,
+      "average_rpm": 1618.0,
+      "average_fuel_l_100km": 0.16,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 98.88,
+      "accel_events": 422,
+      "brake_events": 415
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-14_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 75.8,
+      "average_rpm": 1611.6,
+      "average_fuel_l_100km": 0.26,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 90.38,
+      "accel_events": 733,
+      "brake_events": 764
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-14_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 51.2,
+      "average_rpm": 1415.6,
+      "average_fuel_l_100km": 0.29,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 83.53,
+      "accel_events": 658,
+      "brake_events": 680
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-16_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 80.3,
+      "average_rpm": 1591.1,
+      "average_fuel_l_100km": 0.18,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 98.06,
+      "accel_events": 660,
+      "brake_events": 608
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-17_Seat_Leon_BB_RT_Normal_Glatteis",
+    "metrics": {
+      "average_speed_kmh": 42.5,
+      "average_rpm": 1487.0,
+      "average_fuel_l_100km": 0.29,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 90.05,
+      "accel_events": 1085,
+      "brake_events": 1179
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-17_Seat_Leon_RT_BB_Frei",
+    "metrics": {
+      "average_speed_kmh": 63.6,
+      "average_rpm": 1545.3,
+      "average_fuel_l_100km": 0.32,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 88.8,
+      "accel_events": 765,
+      "brake_events": 752
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-18_Seat_Leon_RT_KA_Stau",
+    "metrics": {
+      "average_speed_kmh": 80.0,
+      "average_rpm": 1728.2,
+      "average_fuel_l_100km": 0.26,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 94.88,
+      "accel_events": 1567,
+      "brake_events": 1450
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-20_Seat_Leon_KA_KA_Frei",
+    "metrics": {
+      "average_speed_kmh": 29.8,
+      "average_rpm": 1343.0,
+      "average_fuel_l_100km": 0.51,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 76.31,
+      "accel_events": 282,
+      "brake_events": 251
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-21_Seat_Leon_BB_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 75.3,
+      "average_rpm": 1603.4,
+      "average_fuel_l_100km": 0.22,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 90.2,
+      "accel_events": 500,
+      "brake_events": 492
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-21_Seat_Leon_KA_BB_Normal",
+    "metrics": {
+      "average_speed_kmh": 67.1,
+      "average_rpm": 1591.4,
+      "average_fuel_l_100km": 0.3,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 91.96,
+      "accel_events": 1263,
+      "brake_events": 1250
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-21_Seat_Leon_KA_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 29.9,
+      "average_rpm": 1292.9,
+      "average_fuel_l_100km": 0.43,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 82.64,
+      "accel_events": 373,
+      "brake_events": 391
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-22_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 64.7,
+      "average_rpm": 1544.6,
+      "average_fuel_l_100km": 0.26,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 90.27,
+      "accel_events": 942,
+      "brake_events": 983
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-23_Seat_Leon_RT_RT_Frei_Beschleunigung",
+    "metrics": {
+      "average_speed_kmh": 57.9,
+      "average_rpm": 1500.5,
+      "average_fuel_l_100km": 0.28,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 95.76,
+      "accel_events": 274,
+      "brake_events": 309
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-23_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 73.6,
+      "average_rpm": 1592.5,
+      "average_fuel_l_100km": 0.26,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 92.32,
+      "accel_events": 800,
+      "brake_events": 838
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-23_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 65.6,
+      "average_rpm": 1547.7,
+      "average_fuel_l_100km": 0.19,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 98.69,
+      "accel_events": 655,
+      "brake_events": 610
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-23_Seat_Leon_S_S_Stau",
+    "metrics": {
+      "average_speed_kmh": 30.3,
+      "average_rpm": 1213.6,
+      "average_fuel_l_100km": 0.55,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 85.98,
+      "accel_events": 538,
+      "brake_events": 597
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-26_Seat_Leon_KA_KA_Frei",
+    "metrics": {
+      "average_speed_kmh": 32.7,
+      "average_rpm": 1358.9,
+      "average_fuel_l_100km": 0.47,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 77.88,
+      "accel_events": 308,
+      "brake_events": 322
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-26_Seat_Leon_RT_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 70.7,
+      "average_rpm": 1572.8,
+      "average_fuel_l_100km": 0.25,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 93.48,
+      "accel_events": 1437,
+      "brake_events": 1456
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-26_Seat_Leon_RT_RT_Frei",
+    "metrics": {
+      "average_speed_kmh": 51.9,
+      "average_rpm": 1452.7,
+      "average_fuel_l_100km": 0.38,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 80.41,
+      "accel_events": 311,
+      "brake_events": 310
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-27_Seat_Leon_KA_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 26.6,
+      "average_rpm": 1308.4,
+      "average_fuel_l_100km": 0.48,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 80.52,
+      "accel_events": 429,
+      "brake_events": 444
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-27_Seat_Leon_KA_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 83.9,
+      "average_rpm": 1736.7,
+      "average_fuel_l_100km": 0.26,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 95.75,
+      "accel_events": 1253,
+      "brake_events": 1219
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-28_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 58.8,
+      "average_rpm": 1472.8,
+      "average_fuel_l_100km": 0.29,
+      "high_rpm_low_speed_percent": 0.01,
+      "long_idle_percent": 89.51,
+      "accel_events": 929,
+      "brake_events": 933
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-02-28_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 68.2,
+      "average_rpm": 1541.9,
+      "average_fuel_l_100km": 0.29,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 93.15,
+      "accel_events": 816,
+      "brake_events": 785
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-01_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 73.6,
+      "average_rpm": 1580.5,
+      "average_fuel_l_100km": 0.25,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 90.65,
+      "accel_events": 841,
+      "brake_events": 831
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-01_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 44.5,
+      "average_rpm": 1308.4,
+      "average_fuel_l_100km": 0.34,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 88.12,
+      "accel_events": 1049,
+      "brake_events": 1048
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-02_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 68.1,
+      "average_rpm": 1564.6,
+      "average_fuel_l_100km": 0.25,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 92.39,
+      "accel_events": 791,
+      "brake_events": 801
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-06_Seat_Leon_KA_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 86.4,
+      "average_rpm": 1734.1,
+      "average_fuel_l_100km": 0.23,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 93.05,
+      "accel_events": 1225,
+      "brake_events": 1125
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-07_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 64.5,
+      "average_rpm": 1543.4,
+      "average_fuel_l_100km": 0.26,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 90.53,
+      "accel_events": 831,
+      "brake_events": 810
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-07_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 65.2,
+      "average_rpm": 1486.0,
+      "average_fuel_l_100km": 0.27,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 90.75,
+      "accel_events": 811,
+      "brake_events": 779
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-08_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 56.1,
+      "average_rpm": 1451.2,
+      "average_fuel_l_100km": 0.28,
+      "high_rpm_low_speed_percent": 0.01,
+      "long_idle_percent": 87.93,
+      "accel_events": 938,
+      "brake_events": 1014
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-19_Seat_Leon_KA_KA_Frei",
+    "metrics": {
+      "average_speed_kmh": 27.5,
+      "average_rpm": 1318.8,
+      "average_fuel_l_100km": 0.47,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 76.8,
+      "accel_events": 324,
+      "brake_events": 329
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-19_Seat_Leon_RT_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 63.8,
+      "average_rpm": 1525.3,
+      "average_fuel_l_100km": 0.29,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 86.56,
+      "accel_events": 1788,
+      "brake_events": 1873
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-20_Seat_Leon_KA_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 24.2,
+      "average_rpm": 1178.6,
+      "average_fuel_l_100km": 0.52,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 80.03,
+      "accel_events": 450,
+      "brake_events": 429
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-21_Seat_Leon_KA_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 81.3,
+      "average_rpm": 1659.4,
+      "average_fuel_l_100km": 0.22,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 94.19,
+      "accel_events": 1290,
+      "brake_events": 1204
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-22_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 60.9,
+      "average_rpm": 1466.0,
+      "average_fuel_l_100km": 0.27,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 92.27,
+      "accel_events": 892,
+      "brake_events": 942
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-22_Seat_Leon_S_RT_Normal",
+    "metrics": {
+      "average_speed_kmh": 65.6,
+      "average_rpm": 1561.8,
+      "average_fuel_l_100km": 0.28,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 91.39,
+      "accel_events": 810,
+      "brake_events": 838
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-23_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 62.5,
+      "average_rpm": 1508.3,
+      "average_fuel_l_100km": 0.28,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 87.05,
+      "accel_events": 1019,
+      "brake_events": 1054
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-23_Seat_Leon_S_RT_Stau",
+    "metrics": {
+      "average_speed_kmh": 52.1,
+      "average_rpm": 1433.0,
+      "average_fuel_l_100km": 0.3,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 87.55,
+      "accel_events": 1104,
+      "brake_events": 1086
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-26_Seat_Leon_RT_S_Normal",
+    "metrics": {
+      "average_speed_kmh": 69.8,
+      "average_rpm": 1515.9,
+      "average_fuel_l_100km": 0.26,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 91.25,
+      "accel_events": 831,
+      "brake_events": 857
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-26_Seat_Leon_S_RT_Stau",
+    "metrics": {
+      "average_speed_kmh": 57.6,
+      "average_rpm": 1395.7,
+      "average_fuel_l_100km": 0.24,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 92.75,
+      "accel_events": 455,
+      "brake_events": 491
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-03-29_Seat_Leon_KA_RT_Stau",
+    "metrics": {
+      "average_speed_kmh": 51.9,
+      "average_rpm": 1334.2,
+      "average_fuel_l_100km": 0.3,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 88.16,
+      "accel_events": 2237,
+      "brake_events": 2295
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-04-23_Seat_Leon_KA_KA_Frei",
+    "metrics": {
+      "average_speed_kmh": 32.0,
+      "average_rpm": 1259.8,
+      "average_fuel_l_100km": 0.37,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 78.9,
+      "accel_events": 273,
+      "brake_events": 311
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  },
+  {
+    "trip_name": "2018-04-23_Seat_Leon_RT_KA_Normal",
+    "metrics": {
+      "average_speed_kmh": 57.2,
+      "average_rpm": 1428.8,
+      "average_fuel_l_100km": 0.3,
+      "high_rpm_low_speed_percent": 0.0,
+      "long_idle_percent": 87.75,
+      "accel_events": 1842,
+      "brake_events": 1941
+    },
+    "patterns_detected": [
+      "Long idling periods",
+      "Frequent acceleration\u2013brake cycles"
+    ]
+  }
+]
