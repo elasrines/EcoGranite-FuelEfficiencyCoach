@@ -1,3 +1,5 @@
+# src/dashboard_app.py
+
 from pathlib import Path
 import json
 
@@ -37,11 +39,6 @@ def load_trip_stats() -> pd.DataFrame:
 def load_granite_feedback() -> pd.DataFrame:
     """
     Load Granite trip feedback from JSON.
-
-    Expected fields (adapt to your actual schema):
-      - trip_id / Trip_ID / tripId ...
-      - baseline_feedback
-      - improved_feedback
     """
     path = DATA_DIR / "granite_trip_feedback.json"
 
@@ -98,6 +95,110 @@ def classify_eco_status(score: float) -> str:
         return "Moderate"
     return "Needs improvement"
 
+def build_trip_insights(row: pd.Series) -> list[dict]:
+    """
+    Return a list of insight dicts:
+    { "severity": "bad" | "warn" | "good", "title": str, "text": str }
+    based on trip_summary_stats metrics.
+    """
+    insights = []
+
+    fuel = row.get("Avg_Fuel_L/100km")
+    idle = row.get("Long_Idle_%")
+    high_rpm = row.get("HighRPM_LowSpeed_%")
+    accel = row.get("Accel_Events")
+    brake = row.get("Brake_Events")
+
+    # Fuel usage
+    if pd.notna(fuel):
+        # ≤ 0.30 → efficient, 0.30–0.40 → moderate, ≥ 0.40 → high
+        if fuel >= 0.40:
+            insights.append({
+                "severity": "bad",
+                "title": "Fuel usage high",
+                "text": f"Average fuel consumption is {fuel:.2f} L/100km – consider smoother acceleration and lower RPM where possible."
+            })
+        elif fuel <= 0.30:
+            insights.append({
+                "severity": "good",
+                "title": "Fuel usage efficient",
+                "text": f"Average fuel consumption is only {fuel:.2f} L/100km – this is efficient for this vehicle."
+            })
+        else:
+            insights.append({
+                "severity": "warn",
+                "title": "Fuel usage moderate",
+                "text": f"Fuel consumption is {fuel:.2f} L/100km – acceptable, but there is room to reduce it with gentler throttle input."
+            })
+
+
+    # Idling
+    if pd.notna(idle):
+        if idle >= 50:
+            insights.append({
+                "severity": "bad",
+                "title": "Idle time very high",
+                "text": f"Long idle time is {idle:.1f}% of the trip – switching off the engine during long stops would reduce wasted fuel."
+            })
+        elif idle >= 20:
+            insights.append({
+                "severity": "warn",
+                "title": "Idle time noticeable",
+                "text": f"Long idle time is {idle:.1f}% – some of this could likely be avoided."
+            })
+        else:
+            insights.append({
+                "severity": "good",
+                "title": "Idle time under control",
+                "text": f"Long idle time is only {idle:.1f}% – good anticipation of stops and traffic."
+            })
+
+    # High RPM at low speed
+    if pd.notna(high_rpm):
+        # ≥ 0.10% → clearly bad, 0.02–0.10% → occasional (warn), < 0.02% → efficient
+        if high_rpm >= 0.10:
+            insights.append({
+                "severity": "bad",
+                "title": "High RPM at low speed",
+                "text": f"{high_rpm:.2f}% of the trip was spent at high RPM and low speed – upshifting earlier would reduce fuel use."
+            })
+        elif high_rpm >= 0.02:
+            insights.append({
+                "severity": "warn",
+                "title": "Occasional high RPM",
+                "text": f"{high_rpm:.2f}% of the trip had high RPM at low speed – mostly fine, but there’s still room to upshift a bit earlier."
+            })
+        else:
+            insights.append({
+                "severity": "good",
+                "title": "RPM usage efficient",
+                "text": "Very little time was spent at high RPM and low speed – gear selection looks efficient."
+            })
+
+
+    # Aggressive events (accel + brake) – simple heuristic
+    if pd.notna(accel) and pd.notna(brake):
+        total_events = float(accel) + float(brake)
+        if total_events >= 800:
+            insights.append({
+                "severity": "bad",
+                "title": "Many acceleration/braking events",
+                "text": f"There were {int(accel)} acceleration and {int(brake)} braking events – smoother, more anticipatory driving would help."
+            })
+        elif total_events >= 400:
+            insights.append({
+                "severity": "warn",
+                "title": "Frequent speed changes",
+                "text": f"{int(accel)} acceleration and {int(brake)} braking events – typical for heavy traffic, but still a chance to smooth things out."
+            })
+        else:
+            insights.append({
+                "severity": "good",
+                "title": "Smooth speed profile",
+                "text": f"Only {int(accel)} acceleration and {int(brake)} braking events – indicates generally smooth driving."
+            })
+
+    return insights
 
 # ---------- VISUALS ----------
 
@@ -153,7 +254,7 @@ def eco_gauge(score: float) -> go.Figure:
 
 
 def simple_time_series(df: pd.DataFrame, x_col: str, y_col: str, label: str) -> go.Figure:
-    """Sleek line chart."""
+    """Full-size sleek line chart."""
     fig = go.Figure()
     fig.add_trace(
         go.Scatter(
@@ -182,6 +283,40 @@ def simple_time_series(df: pd.DataFrame, x_col: str, y_col: str, label: str) -> 
             gridcolor="rgba(148,163,184,0.1)",
         ),
         hovermode="x unified",
+        height=280,
+    )
+    return fig
+
+
+def compact_time_series(df: pd.DataFrame, x_col: str, y_col: str, label: str) -> go.Figure:
+    """Small sparkline-style chart for trip traces."""
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=df[x_col],
+            y=df[y_col],
+            mode="lines",
+            name=label,
+            line=dict(width=1.5),
+        )
+    )
+    fig.update_layout(
+        margin=dict(l=0, r=0, t=18, b=12),
+        paper_bgcolor="rgba(15,23,42,0.0)",
+        plot_bgcolor="rgba(15,23,42,0.45)",
+        font=dict(color="#e5e7eb", family="Segoe UI, sans-serif", size=9),
+        xaxis=dict(
+            showgrid=False,
+            showticklabels=False,
+            zeroline=False,
+        ),
+        yaxis=dict(
+            showgrid=False,
+            zeroline=False,
+            showticklabels=False,
+        ),
+        showlegend=False,
+        height=130,
     )
     return fig
 
@@ -256,49 +391,83 @@ def main() -> None:
         else:
             obd_df = pd.DataFrame()
 
-        # For debugging: show columns (you can comment this out later)
         st.caption("OBD-II columns:")
         st.code(", ".join(obd_df.columns), language="text")
 
         trip_stats_df = load_trip_stats()
         granite_df = load_granite_feedback()
 
-        # Try to detect a trip id column
+        # Detect trip id column
         trip_id_col = None
         for cand in ["Trip", "trip_id", "Trip_ID", "tripId", "trip"]:
-
             if cand in trip_stats_df.columns:
                 trip_id_col = cand
                 break
 
+        # ---- Trip filters ----
+        st.subheader("Trip filters")
+        filter_mode = st.radio(
+            "Highlight trips by",
+            ["All trips", "High idle", "High RPM", "High fuel use"],
+            index=0,
+        )
+
+        filtered_trip_stats = trip_stats_df.copy()
+        filter_caption = ""
+
+        if not trip_stats_df.empty and trip_id_col:
+            # High idle → align with insight "Idle time very high" (>= 50%)
+            if filter_mode == "High idle" and "Long_Idle_%" in trip_stats_df.columns:
+                idle_metric = trip_stats_df["Long_Idle_%"].fillna(0.0)
+                filtered_trip_stats = trip_stats_df[idle_metric >= 50.0]
+                filter_caption = "Trips with idle time ≥ 50% (very high idle)."
+
+            # High RPM → align with insight thresholds: >0.1% is at least "occasional high RPM"
+            elif filter_mode == "High RPM" and "HighRPM_LowSpeed_%" in trip_stats_df.columns:
+                rpm_metric = trip_stats_df["HighRPM_LowSpeed_%"].fillna(0.0)
+                # Align with insights: include all trips that are at least "warn"
+                # i.e. HighRPM_LowSpeed_% ≥ 0.02%
+                filtered_trip_stats = trip_stats_df[rpm_metric >= 0.02]
+                filter_caption = "Trips with ≥ 0.02% time at high RPM and low speed."
+
+            # High fuel → align with insight "Fuel usage high" (>= 0.40 L/100km)
+            elif filter_mode == "High fuel use" and "Avg_Fuel_L/100km" in trip_stats_df.columns:
+                fuel_metric = trip_stats_df["Avg_Fuel_L/100km"].fillna(0.0)
+                filtered_trip_stats = trip_stats_df[fuel_metric >= 0.40]
+                filter_caption = "Trips with avg fuel ≥ 0.40 L/100km (high usage)."
+
+
         selected_trip_id = None
-        if not trip_stats_df.empty:
+        if not filtered_trip_stats.empty:
             if trip_id_col:
-                trip_ids = list(trip_stats_df[trip_id_col].unique())
+                trip_ids = list(filtered_trip_stats[trip_id_col].unique())
                 selected_trip_id = st.selectbox("Select trip", trip_ids)
+                if filter_caption:
+                    st.caption(filter_caption)
             else:
                 st.caption("No explicit `trip_id` column found; using row index.")
-                selected_trip_id = st.selectbox("Select trip (row index)", trip_stats_df.index)
+                selected_trip_id = st.selectbox("Select trip (row index)", filtered_trip_stats.index)
+        else:
+            st.caption("No trips available for this filter.")
 
     if obd_df.empty:
         st.info("Upload a CSV or enable the demo dataset in the sidebar to see the dashboard.")
         return
 
-        # ---------- PER-TRIP CONTEXT ----------
+    # ---------- PER-TRIP CONTEXT ----------
     current_trip_row = None
-    if not trip_stats_df.empty:
+    if not filtered_trip_stats.empty:
         if selected_trip_id is not None:
             if trip_id_col:
-                matches = trip_stats_df[trip_stats_df[trip_id_col] == selected_trip_id]
+                matches = filtered_trip_stats[filtered_trip_stats[trip_id_col] == selected_trip_id]
                 if not matches.empty:
                     current_trip_row = matches.iloc[0]
             else:
-                current_trip_row = trip_stats_df.loc[selected_trip_id]
+                current_trip_row = filtered_trip_stats.loc[selected_trip_id]
         else:
-            current_trip_row = trip_stats_df.iloc[0]
+            current_trip_row = filtered_trip_stats.iloc[0]
 
     # ---------- PER-TRIP OBD DATA ----------
-    # use only the lines of the selected trip
     trip_obd_df = obd_df.copy()
     if selected_trip_id is not None and "source_file" in trip_obd_df.columns:
         trip_obd_df = trip_obd_df[trip_obd_df["source_file"] == selected_trip_id].copy()
@@ -307,19 +476,16 @@ def main() -> None:
     x_col = None
     trip_date_str = None
     if isinstance(selected_trip_id, str):
-        # filenames like "2017-07-12_Seat_Leon_..."
         trip_date_str = selected_trip_id.split("_")[0]
 
     if trip_date_str is not None and "Timestamp" in trip_obd_df.columns:
         base_date = pd.to_datetime(trip_date_str, errors="coerce")
 
         if pd.api.types.is_numeric_dtype(trip_obd_df["Timestamp"]):
-            # numeric seconds from start of trip
             trip_obd_df["TripDateTime"] = base_date + pd.to_timedelta(
                 trip_obd_df["Timestamp"], unit="s"
             )
         else:
-            # assume time-of-day strings; combine with trip date
             trip_obd_df["TripDateTime"] = pd.to_datetime(
                 trip_obd_df["Timestamp"].astype(str).apply(
                     lambda t: f"{trip_date_str} {t}"
@@ -329,7 +495,6 @@ def main() -> None:
 
         x_col = "TripDateTime"
 
-    # fallback if anything above fails
     if x_col is None:
         for cand in ["Timestamp", "timestamp", "time", "datetime"]:
             if cand in trip_obd_df.columns:
@@ -340,27 +505,31 @@ def main() -> None:
                 trip_obd_df = trip_obd_df.reset_index().rename(columns={"index": "index"})
             x_col = "index"
 
-
-    # Detect speed column
+    # Detect columns in OBD data
     speed_col = None
     for cand in ["Speed_kmh", "speed_kmh", "Speed", "speed", "SPEED", "vehicle_speed", "vss"]:
-        if cand in obd_df.columns:
+        if cand in trip_obd_df.columns:
             speed_col = cand
             break
 
-    # Detect fuel column
     fuel_col = None
     for cand in [
-        "fuel_L_s",        # your per-second fuel
-        "L_per_100km",     # or pre-computed fuel/100km
+        "fuel_L_s",
+        "L_per_100km",
         "fuel_rate",
         "FuelRate",
         "FUEL_RATE",
         "fuel_rate_l_h",
         "fuel_consumption",
     ]:
-        if cand in obd_df.columns:
+        if cand in trip_obd_df.columns:
             fuel_col = cand
+            break
+
+    rpm_col = None
+    for cand in ["RPM", "engine_rpm", "EngineRPM"]:
+        if cand in trip_obd_df.columns:
+            rpm_col = cand
             break
 
     # ---------- TABS ----------
@@ -368,27 +537,20 @@ def main() -> None:
 
     # ===== TAB 1: DASHBOARD =====
     with dashboard_tab:
-        top_left, top_right = st.columns([1.1, 1])
 
+        # --- TOP ROW: Trip snapshot (left) + Eco score (right) ---
+        top_left, top_right = st.columns([1.2, 1])
+
+        # LEFT → Trip snapshot
         with top_left:
-            st.subheader("Eco score")
-            if current_trip_row is not None:
-                eco_score = compute_overall_eco_score(current_trip_row)
-            else:
-                eco_score = 72.0
-            fig = eco_gauge(eco_score)
-            st.plotly_chart(fig, use_container_width=True)
-
-        with top_right:
             st.subheader("Trip snapshot")
 
             if current_trip_row is not None:
-                # Columns based on trip_summary_stats.csv
                 metric_defs = [
                     ("Avg speed", "Avg_Speed_kmh", "km/h", 1),
                     ("Avg RPM", "Avg_RPM", "", 0),
                     ("Fuel (avg)", "Avg_Fuel_L/100km", "L/100km", 2),
-                    ("High RPM @ low speed", "HighRPM_LowSpeed_%", "%", 1),
+                    ("High RPM @ low speed", "HighRPM_LowSpeed_%", "%", 2),
                     ("Long idle", "Long_Idle_%", "%", 1),
                     ("Accel events", "Accel_Events", "", 0),
                     ("Brake events", "Brake_Events", "", 0),
@@ -402,7 +564,6 @@ def main() -> None:
                         if unit:
                             display_val = f"{val:.{decimals}f} {unit}"
                         else:
-                            # counts like events / RPM
                             display_val = f"{val:.{decimals}f}"
                         with cols[i % 3]:
                             st.metric(label, display_val)
@@ -410,26 +571,92 @@ def main() -> None:
             else:
                 st.caption("No trip stats available yet.")
 
+        # RIGHT → Eco score
+        with top_right:
+            st.subheader("Trip eco score")
+
+            if current_trip_row is not None:
+                eco_score = compute_overall_eco_score(current_trip_row)
+            else:
+                eco_score = 72.0
+
+            fig = eco_gauge(eco_score)
+            st.plotly_chart(fig, use_container_width=True)
+
+        st.markdown("---")
+        # --- SECOND ROW: Driving insights (full width) ---
+        st.subheader("Driving insights")
+
+        if current_trip_row is None:
+            st.caption("Select a trip to see key positives and pain points.")
+        else:
+            insights = build_trip_insights(current_trip_row)
+            if not insights:
+                st.caption("No insights available for this trip.")
+            else:
+                for ins in insights:
+                    sev = ins["severity"]
+                    if sev == "bad":
+                        border = "#ef4444"
+                        bg = "rgba(239,68,68,0.08)"
+                    elif sev == "warn":
+                        border = "#f59e0b"
+                        bg = "rgba(245,158,11,0.08)"
+                    else:
+                        border = "#10b981"
+                        bg = "rgba(16,185,129,0.08)"
+
+                    st.markdown(
+                        f"""
+                        <div style="
+                            background:{bg};
+                            border-left:3px solid {border};
+                            padding:10px 12px;
+                            border-radius:8px;
+                            margin-bottom:8px;
+                            font-size:13px;
+                        ">
+                        <div style="font-weight:600; margin-bottom:2px;">
+                            {ins['title']}
+                        </div>
+                        <div style="color:#e5e7eb;">
+                            {ins['text']}
+                        </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+
+        st.markdown("---")
+        
+
+        # ===== SPEED PROFILE =====
+        st.subheader("Speed profile")
+        if speed_col:
+            fig_speed = simple_time_series(trip_obd_df, x_col, speed_col, "Speed")
+            st.plotly_chart(fig_speed, use_container_width=True, key="speed_chart")
+        else:
+            st.caption("Speed column not found in this dataset.")
 
         st.markdown("---")
 
-        chart_left, chart_right = st.columns(2)
+        # ===== RPM PROFILE =====
+        st.subheader("RPM profile")
+        if rpm_col:
+            fig_rpm = simple_time_series(trip_obd_df, x_col, rpm_col, "RPM")
+            st.plotly_chart(fig_rpm, use_container_width=True, key="rpm_chart")
+        else:
+            st.caption("RPM column not found in this dataset.")
 
-        with chart_left:
-            st.subheader("Speed profile")
-            if speed_col:
-                fig_speed = simple_time_series(trip_obd_df, x_col, speed_col, "Speed")
-                st.plotly_chart(fig_speed, use_container_width=True, key="speed_chart")
-            else:
-                st.caption("Speed column not found in this dataset.")
+        st.markdown("---")
 
-        with chart_right:
-            st.subheader("Fuel consumption")
-            if fuel_col:
-                fig_fuel = simple_time_series(trip_obd_df, x_col, fuel_col, "Fuel rate")
-                st.plotly_chart(fig_fuel, use_container_width=True, key="fuel_chart")
-            else:
-                st.caption("Fuel rate column not found in this dataset.")
+        # ===== FUEL CONSUMPTION =====
+        st.subheader("Fuel consumption")
+        if fuel_col:
+            fig_fuel = simple_time_series(trip_obd_df, x_col, fuel_col, "Fuel rate")
+            st.plotly_chart(fig_fuel, use_container_width=True, key="fuel_chart")
+        else:
+            st.caption("Fuel rate column not found in this dataset.")
 
 
     # ===== TAB 2: GRANITE FEEDBACK =====
@@ -442,7 +669,6 @@ def main() -> None:
         else:
             trip_feedback_df = granite_df.copy()
 
-            # detect trip id column for Granite file (your file uses "Trip")
             granite_trip_id_col = None
             for cand in ["Trip", "trip_id", "Trip_ID", "tripId", "trip"]:
                 if cand in trip_feedback_df.columns:
@@ -457,7 +683,6 @@ def main() -> None:
             else:
                 row = trip_feedback_df.iloc[0]
 
-                # your schema: Trip, prompt, feedback
                 prompt_text = row.get("prompt", "(no prompt available)")
                 feedback_text = row.get("feedback", "(no feedback available)")
 
@@ -501,4 +726,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
