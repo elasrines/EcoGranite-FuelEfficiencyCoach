@@ -63,7 +63,7 @@ A lightweight Streamlit dashboard brings everything together:
 - 🤖 Granite-Generated Coaching Feedback : 
 The goal is to make technical driving data intuitive, visual, and motivating, rather than overwhelming.
 
-# ✅ Current Progress (Week 9)
+# ✅ Current Progress
 So far, EcoGranite supports:
 - End-to-end data processing from CSV to feedback
 - Trip-level efficiency scoring
@@ -77,7 +77,7 @@ The system is now fully functional for trip analysis.
 Upcoming work focuses on:
 - Refining prompt design for more precise coaching
 - UI polish and storytelling improvements
-- Adding lightweight evaluation metrics (accuracy, usefulness, safety)
+- Adding lightweight evaluation metrics (accuracy, usefulness, safety) + testing
 - Preparing final report and demo material
 
 
