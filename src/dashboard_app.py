@@ -495,6 +495,42 @@ def time_series(df: pd.DataFrame, x_col: str, y_col: str, label: str, *, height:
     fig.update_layout(margin=dict(l=10, r=10, t=30, b=30), xaxis_title=None, yaxis_title=label, height=height)
     return apply_plotly_theme(fig)
 
+def add_band_annotation(
+    fig: go.Figure,
+    x_start,
+    x_end,
+    text: str,
+    *,
+    y: float = 0.95,
+    color: str = "rgba(239,68,68,0.12)",
+) -> None:
+    """
+    Adds a shaded vertical band + annotation text.
+    Used to highlight inefficient driving zones.
+    """
+    fig.add_vrect(
+        x0=x_start,
+        x1=x_end,
+        fillcolor=color,
+        opacity=0.6,
+        line_width=0,
+        layer="below",
+    )
+
+    fig.add_annotation(
+        x=x_start,
+        y=y,
+        xref="x",
+        yref="paper",
+        text=text,
+        showarrow=False,
+        align="left",
+        font=dict(size=11, color="#0f172a"),
+        bgcolor="rgba(255,255,255,0.85)",
+        bordercolor="rgba(15,23,42,0.15)",
+        borderwidth=1,
+        borderpad=6,
+    )
 
 # =========================
 # NAV
@@ -856,7 +892,24 @@ def main() -> None:
         st.markdown("---")
         st.subheader("Speed profile")
         if speed_col:
-            st.plotly_chart(time_series(trip_obd_df, x_col, speed_col, "Speed"), use_container_width=True, key="speed_chart")
+            fig_speed = time_series(trip_obd_df, x_col, speed_col, "Speed")
+
+            # Annotate stop-and-go traffic
+            low_speed_mask = trip_obd_df[speed_col] < 10
+            if low_speed_mask.any():
+                idx = low_speed_mask[low_speed_mask].index
+                start = trip_obd_df.loc[idx[0], x_col]
+                end = trip_obd_df.loc[idx[-1], x_col]
+
+                add_band_annotation(
+                    fig_speed,
+                    start,
+                    end,
+                    "Heavy traffic zone → frequent stops increased fuel use",
+                    color="rgba(245,158,11,0.18)",
+                )
+
+            st.plotly_chart(fig_speed, use_container_width=True, key="speed_chart")
         else:
             st.caption("Speed column not found in this dataset.")
 
@@ -864,7 +917,23 @@ def main() -> None:
         st.markdown("---")
         st.subheader("RPM profile")
         if rpm_col:
-            st.plotly_chart(time_series(trip_obd_df, x_col, rpm_col, "RPM"), use_container_width=True, key="rpm_chart")
+            fig_rpm = time_series(trip_obd_df, x_col, rpm_col, "RPM")
+
+            high_rpm_mask = trip_obd_df[rpm_col] > 3000
+            if high_rpm_mask.any():
+                idx = high_rpm_mask[high_rpm_mask].index
+                start = trip_obd_df.loc[idx[0], x_col]
+                end = trip_obd_df.loc[idx[-1], x_col]
+
+                add_band_annotation(
+                    fig_rpm,
+                    start,
+                    end,
+                    "High RPM → inefficient gear usage",
+                    color="rgba(239,68,68,0.18)",
+                )
+
+            st.plotly_chart(fig_rpm, use_container_width=True, key="rpm_chart")
         else:
             st.caption("RPM column not found in this dataset.")
 
@@ -872,7 +941,23 @@ def main() -> None:
         st.markdown("---")
         st.subheader("Fuel consumption")
         if fuel_col:
-            st.plotly_chart(time_series(trip_obd_df, x_col, fuel_col, "Fuel rate"), use_container_width=True, key="fuel_chart")
+            fig_fuel = time_series(trip_obd_df, x_col, fuel_col, "Fuel rate")
+
+            fuel_spike = trip_obd_df[fuel_col] > trip_obd_df[fuel_col].quantile(0.9)
+            if fuel_spike.any():
+                idx = fuel_spike[fuel_spike].index
+                start = trip_obd_df.loc[idx[0], x_col]
+                end = trip_obd_df.loc[idx[-1], x_col]
+
+                add_band_annotation(
+                    fig_fuel,
+                    start,
+                    end,
+                    "Fuel spike → hard acceleration or high RPM",
+                    color="rgba(239,68,68,0.20)",
+                )
+
+            st.plotly_chart(fig_fuel, use_container_width=True, key="fuel_chart")
         else:
             st.caption("Fuel rate column not found in this dataset.")
 
