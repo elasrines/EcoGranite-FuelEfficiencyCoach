@@ -1,7 +1,8 @@
-# 🚗 EcoGranite: Turning Raw OBD-II Data into AI-Driven Eco-Driving Coaching
+# 🚗 EcoGranite: Fuel Efficiency Coach
+
+Turning Raw OBD-II Data into AI-Driven Eco-Driving Coaching
 
 Author: Ines El Asri (ines.elasri.23@ucl.ac.uk)
-
 UCL Final Year Project
 
 # 🌱 Why EcoGranite?
