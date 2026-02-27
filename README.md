@@ -5,6 +5,8 @@ Turning Raw OBD-II Data into AI-Driven Eco-Driving Coaching
 Author: Ines El Asri (ines.elasri.23@ucl.ac.uk)
 UCL Final Year Project
 
+Project Status Document (with Weekly & Monthly updates) : https://docs.google.com/document/d/1i2nGMdczQketJoSdZ07nO4apT52TPrFoXufwxPKZxLE/edit?tab=t.0
+
 # 🌱 Why EcoGranite?
 
 Modern vehicles generate huge amounts of telemetry data through OBD-II sensors — speed, RPM, airflow, throttle position, and more.
@@ -90,9 +92,6 @@ The system is now fully functional for trip analysis.
 
 # 🔮 What’s Next
 Upcoming work focuses on:
-- Refining prompt design for more precise coaching
-- UI polish and storytelling improvements
-- Adding lightweight evaluation metrics (accuracy, usefulness, safety) + testing
 - Preparing final report and demo material
 
 
