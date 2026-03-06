@@ -210,9 +210,9 @@ def compute_overall_eco_score(row: pd.Series) -> float:
         fuel = float(row["Avg_Fuel_L/100km"])
         score -= min((fuel - 0.2) * 120, 35)
 
-    if "Long_Idle_%" in row:
-        idle = float(row["Long_Idle_%"])
-        score -= min(idle * 0.3, 30)
+    if "Long_Idle_Time_%" in row:
+        idle = float(row["Long_Idle_Time_%"])
+        score -= min(idle * 0.5, 30)
 
     if "Accel_Events" in row:
         score -= min(float(row["Accel_Events"]) * 0.01, 15)
@@ -235,7 +235,7 @@ def build_trip_insights(row: pd.Series) -> list[dict]:
     insights: list[dict] = []
 
     fuel = row.get("Avg_Fuel_L/100km")
-    idle = row.get("Long_Idle_%")
+    idle = row.get("Long_Idle_Time_%")
     high_rpm = row.get("HighRPM_LowSpeed_%")
     accel = row.get("Accel_Events")
     brake = row.get("Brake_Events")
@@ -361,7 +361,7 @@ def compute_penalties(row: pd.Series) -> dict[str, float]:
         penalties["Fuel use"] = max(0.0, float(fuel_pen))
 
     # Idle penalty (max 30)
-    idle = row.get("Long_Idle_%")
+    idle = row.get("Long_Idle_Time_%")
     if pd.notna(idle):
         idle_pen = min(float(idle) * 0.3, 30)
         penalties["Idling"] = max(0.0, float(idle_pen))
@@ -644,7 +644,7 @@ def eco_story_card(row: pd.Series, eco_score: float) -> str:
     status = classify_eco_status(eco_score).lower()
 
     fuel = row.get("Avg_Fuel_L/100km")
-    idle = row.get("Long_Idle_%")
+    idle = row.get("Long_Idle_Time_%")
     accel = row.get("Accel_Events")
 
     fuel_txt = f"{float(fuel):.2f} L/100km" if pd.notna(fuel) else "N/A"
@@ -741,13 +741,27 @@ def main() -> None:
         st.code(", ".join(obd_df.columns), language="text")
 
         trip_stats_df = load_trip_stats()
+        
+        # --- Precompute Eco Score for filtering ---
+        if not trip_stats_df.empty:
+            trip_stats_df = trip_stats_df.copy()
+            trip_stats_df["Eco_Score"] = trip_stats_df.apply(
+                compute_overall_eco_score, axis=1
+            )
 
         trip_id_col = find_first_col(trip_stats_df, ["Trip", "trip_id", "Trip_ID", "tripId", "trip"])
 
-        st.subheader("Trip filters")
         filter_mode = st.radio(
             "Highlight trips by",
-            ["All trips", "High idle", "High RPM", "High fuel use"],
+            [
+                "All trips",
+                "Efficient trips (Eco ≥ 70)",
+                "Moderate trips (40 ≤ Eco < 70)",
+                "Not efficient trips (Eco < 40)",
+                "High idle",
+                "High RPM",
+                "High fuel use",
+            ],
             index=0,
         )
 
@@ -755,8 +769,27 @@ def main() -> None:
         filter_caption = ""
 
         if not trip_stats_df.empty and trip_id_col:
-            if filter_mode == "High idle" and "Long_Idle_%" in trip_stats_df.columns:
-                filtered_trip_stats = trip_stats_df[trip_stats_df["Long_Idle_%"].fillna(0.0) >= 50.0]
+        
+            if filter_mode == "Efficient trips (Eco ≥ 70)" and "Eco_Score" in trip_stats_df.columns:
+                filtered_trip_stats = trip_stats_df[
+                    trip_stats_df["Eco_Score"] >= 70
+                ]
+                filter_caption = "Trips classified as Efficient (Eco Score ≥ 70)."
+
+            elif filter_mode == "Moderate trips (40 ≤ Eco < 70)" and "Eco_Score" in trip_stats_df.columns:
+                filtered_trip_stats = trip_stats_df[
+                    (trip_stats_df["Eco_Score"] >= 40) & (trip_stats_df["Eco_Score"] < 70)
+                ]
+                filter_caption = "Trips classified as Moderate (40 ≤ Eco Score < 70)."
+
+            elif filter_mode == "Not efficient trips (Eco < 40)" and "Eco_Score" in trip_stats_df.columns:
+                filtered_trip_stats = trip_stats_df[
+                    trip_stats_df["Eco_Score"] < 40
+                ]
+                filter_caption = "Trips classified as In need of improvement (Eco Score < 40)."
+
+            if filter_mode == "High idle" and "Long_Idle_Time_%" in trip_stats_df.columns:
+                filtered_trip_stats = trip_stats_df[trip_stats_df["Long_Idle_Time_%"].fillna(0.0) >= 50.0]
                 filter_caption = "Trips with idle time ≥ 50% (very high idle)."
 
             elif filter_mode == "High RPM" and "HighRPM_LowSpeed_%" in trip_stats_df.columns:
@@ -823,7 +856,7 @@ def main() -> None:
                     ("Fuel (avg)", "Avg_Fuel_L/100km", "L/100km", 2, "Average fuel consumption per 100 km (lower is better)."),
                     ("High RPM @ low speed (%)", "HighRPM_LowSpeed_%", "%", 2,
  "Percent of trip time with high engine RPM while vehicle speed is low (inefficient zone)."),
-                    ("Long idle", "Long_Idle_%", "%", 1, "Idle = engine on while the car isn’t moving (wastes fuel)."),
+                    ("Long idle time", "Long_Idle_Time_%", "%", 1, "Percentage of total trip time spent idling in continuous stops longer than 30 seconds"),
                     ("Accel events", "Accel_Events", "", 0, "Count of strong acceleration events (hard throttle)."),
                     ("Brake events", "Brake_Events", "", 0, "Count of strong braking events (hard braking)."),
                 ]
