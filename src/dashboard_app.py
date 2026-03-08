@@ -1007,10 +1007,15 @@ def main() -> None:
             return
 
         trip_feedback_df = granite_df.copy()
-        granite_trip_id_col = find_first_col(trip_feedback_df, ["Trip", "trip_id", "Trip_ID", "tripId", "trip"])
+        granite_trip_id_col = find_first_col(
+            trip_feedback_df,
+            ["Trip", "trip_id", "Trip_ID", "tripId", "trip"]
+        )
 
         if selected_trip_id is not None and granite_trip_id_col:
-            trip_feedback_df = trip_feedback_df[trip_feedback_df[granite_trip_id_col] == selected_trip_id]
+            trip_feedback_df = trip_feedback_df[
+                trip_feedback_df[granite_trip_id_col] == selected_trip_id
+            ]
 
         if trip_feedback_df.empty:
             st.caption("No Granite feedback for this trip yet.")
@@ -1019,32 +1024,51 @@ def main() -> None:
         row = trip_feedback_df.iloc[0]
         prompt_text = row.get("prompt", "(no prompt available)")
         feedback_text = row.get("feedback", "(no feedback available)")
+        temperature = row.get("temperature", None)
 
-        cols_fb = st.columns(2)
-        with cols_fb[0]:
+        st.markdown("**Granite coaching (AI response)**")
+
+        formatted_feedback = str(feedback_text)
+
+        formatted_feedback = formatted_feedback.replace(
+            "Overview:",
+            "<br><b>Overview</b><br>"
+        )
+
+        formatted_feedback = formatted_feedback.replace(
+            "Coaching Suggestions:",
+            "<br><b>Coaching Suggestions</b><br>"
+        )
+
+        formatted_feedback = formatted_feedback.replace(
+            "Key Takeaway:",
+            "<br><b>Key Takeaway</b><br>"
+        )
+
+        st.markdown(
+            f"""
+            <div style="
+                background: rgba(34,197,94,0.07);
+                border-left: 3px solid #10b981;
+                padding: 14px;
+                border-radius: 6px;
+                font-size: 13px;
+                line-height: 1.7;
+                white-space: normal;
+            ">{formatted_feedback}</div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        meta_bits = [f"Model: IBM Granite (granite-4-h-small)"]
+        if temperature is not None:
+            meta_bits.append(f"Temperature: {temperature}")
+
+        st.caption(" | ".join(meta_bits))
+
+        with st.expander("Show AI generation details"):
             st.markdown("**Granite prompt (trip summary)**")
-            st.markdown(
-                f"""
-                <div style="background: rgba(148,163,184,0.07); border-left: 3px solid #9ca3af;
-                            padding: 14px; border-radius: 6px; font-size:13px; white-space:pre-wrap;">
-                {prompt_text}
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-        with cols_fb[1]:
-            st.markdown("**Granite coaching (AI response)**")
-            st.markdown(
-                f"""
-                <div style="background: rgba(34,197,94,0.07); border-left: 3px solid #10b981;
-                            padding: 14px; border-radius: 6px; font-size:13px; white-space:pre-wrap;">
-                {feedback_text}
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
+            st.code(prompt_text)
 
 if __name__ == "__main__":
     main()
