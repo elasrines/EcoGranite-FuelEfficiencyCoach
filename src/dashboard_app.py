@@ -174,7 +174,11 @@ def slugify(text: str) -> str:
 # =========================
 
 def load_demo_obd() -> pd.DataFrame:
-    return pd.read_csv(DATA_DIR / "cleaned_kit_obd_combined.csv")
+    path = DATA_DIR / "demo_cleaned_kit_obd_combined.csv"
+    if not path.exists():
+        st.warning("Demo OBD dataset not found. Please upload a CSV instead.")
+        return pd.DataFrame()
+    return pd.read_csv(path)
 
 
 def load_trip_stats() -> pd.DataFrame:
