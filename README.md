@@ -1,6 +1,6 @@
 # 🚗 EcoGranite: Fuel Efficiency Coach
 
-Turning Raw OBD-II Data into AI-Driven Eco-Driving Coaching
+Turning Raw OBD-II Data into Eco-Driving Coaching
 
 EcoGranite Platform LIVE : https://ecogranite.streamlit.app/
 
