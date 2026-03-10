@@ -21,7 +21,7 @@ EcoGranite: Fuel Efficiency Coach is an AI-assisted system that:
 - Detects inefficient driving patterns
 - Scores driving behaviour
 - Generates natural-language coaching feedback using IBM Granite
-<img width="1440" height="709" alt="Screenshot 2026-01-25 at 16 56 48" src="https://github.com/user-attachments/assets/99ee5e3e-0bd1-4ffe-930a-a142b2c852cc" />
+<img width="1411" height="701" alt="Screenshot 2026-03-10 at 13 29 26" src="https://github.com/user-attachments/assets/8cb91e56-e144-4823-aa2a-6949fe92801d" />
 
 This project is developed as a solo UCL Final Year Project, combining data engineering, applied ML, and human-centred AI feedback.
 
@@ -66,8 +66,7 @@ A lightweight Streamlit dashboard brings everything together:
 <img width="329" height="528" alt="Screenshot 2026-01-25 at 16 59 45" src="https://github.com/user-attachments/assets/7d50eba2-41a7-4a69-b2dc-e530ccdcba28" />
 
 - 🎯 Overall Driver Score (designed like a real car dashboard)
-<img width="502" height="581" alt="Screenshot 2026-01-25 at 16 57 10" src="https://github.com/user-attachments/assets/e5fbfffb-3ea5-43be-bec5-fcec4c544b03" />
-<img width="1015" height="628" alt="Screenshot 2026-01-25 at 16 57 22" src="https://github.com/user-attachments/assets/7feaada9-4530-40aa-88c8-0db2500e65a5" />
+<img width="1013" height="596" alt="Screenshot 2026-03-10 at 13 28 40" src="https://github.com/user-attachments/assets/83646d11-e349-4c64-a5a2-072c2f47f11d" />
 
 - 🔍 Trip Filters (High RPM, High idling, High fuel consumption)
 <img width="319" height="448" alt="Screenshot 2026-01-25 at 16 58 35" src="https://github.com/user-attachments/assets/0947691a-0bef-41c4-ab96-abf058707b84" />
