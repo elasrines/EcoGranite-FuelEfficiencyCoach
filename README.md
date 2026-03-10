@@ -78,7 +78,8 @@ A lightweight Streamlit dashboard brings everything together:
 <img width="982" height="461" alt="Screenshot 2026-01-25 at 16 57 50" src="https://github.com/user-attachments/assets/d542321a-c20f-417c-9a1b-07948456f88a" />
 
 - 🤖 Granite-Generated Coaching Feedback :
-<img width="1440" height="706" alt="Screenshot 2026-01-25 at 17 02 52" src="https://github.com/user-attachments/assets/baa86dc5-1e6e-44ee-9071-19c8582cb349" />
+<img width="1040" height="611" alt="Screenshot 2026-03-10 at 13 26 56" src="https://github.com/user-attachments/assets/db0ca063-897c-4fb8-9bdf-9fc9a4256b57" />
+
  
 The goal is to make technical driving data intuitive, visual, and motivating, rather than overwhelming.
 
