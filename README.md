@@ -3,11 +3,10 @@
 Turning Raw OBD-II Data into Eco-Driving Coaching
 
 EcoGranite Platform LIVE : https://ecogranite.streamlit.app/
+Project Blog : https://project-blog-ecogranite.vercel.app
 
 Author: Ines El Asri (ines.elasri.23@ucl.ac.uk)
 UCL Final Year Project
-
-Project Status Document (with Weekly & Monthly updates) : https://docs.google.com/document/d/1i2nGMdczQketJoSdZ07nO4apT52TPrFoXufwxPKZxLE/edit?tab=t.0
 
 # 🌱 Why EcoGranite?
 
