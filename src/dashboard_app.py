@@ -727,6 +727,19 @@ def main() -> None:
             help="KIT OBD-II data or your own.",
             key="obd_uploader",
         )
+        
+        with st.expander("Expected CSV format"):
+            st.markdown("""
+            Uploaded datasets should contain the core OBD-II telemetry signals used by the EcoGranite analytics pipeline.
+
+            **Required raw columns (KIT OBD-II format):**
+            - `engine_rpm_[rpm]`
+            - `vehicle_speed_sensor_[km/h]`
+            - `air_flow_rate_from_mass_flow_sensor_[g/s]`
+            - `time` or `gps_time`
+
+            Additional columns are allowed but not required.
+            """)
 
         use_demo = st.checkbox("Use demo dataset", value=True if not uploaded_file else False)
 
