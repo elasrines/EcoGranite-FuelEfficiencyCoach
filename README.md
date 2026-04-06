@@ -31,12 +31,11 @@ This project is developed as a solo UCL Final Year Project, combining data engin
 - Source: Karlsruhe Institute of Technology (KIT)
 
 Each trip includes:
+- Timestamp
 - Vehicle speed
 - Engine RPM
 - Mass Air Flow (MAF)
-- Throttle position
-- Intake air temperature
-- Coolant temperature
+and more unused data such as throttle position, engine coolant temperature...
 
 From this, EcoGranite derives higher-level features such as:
 - Estimated fuel consumption (L/100km)
