@@ -63,8 +63,8 @@ Structured trip summaries are passed to the Granite model, which generates:
 
 # 🖥️ The Dashboard Experience
 A lightweight Streamlit dashboard brings everything together:
-- 📁 CSV Upload
-<img width="329" height="528" alt="Screenshot 2026-01-25 at 16 59 45" src="https://github.com/user-attachments/assets/7d50eba2-41a7-4a69-b2dc-e530ccdcba28" />
+- 📁 Optional CSV Upload (user can use already uploaded by default KIT dataset)
+<img width="189" height="278" alt="Screenshot 2026-04-06 at 10 51 40" src="https://github.com/user-attachments/assets/6da23b34-4f8e-4556-b80d-4c0db13ef582" />
 
 - 🎯 Overall Driver Score (designed like a real car dashboard)
 <img width="1013" height="596" alt="Screenshot 2026-03-10 at 13 28 40" src="https://github.com/user-attachments/assets/83646d11-e349-4c64-a5a2-072c2f47f11d" />
