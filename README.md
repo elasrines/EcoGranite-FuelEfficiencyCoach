@@ -46,8 +46,8 @@ From this, EcoGranite derives higher-level features such as:
 # From Data to Coaching: The Pipeline
 
 At a high level, the system works as follows:
-1. CSV Upload
-Raw OBD-II trip files are uploaded into the system.
+1. Optional CSV Upload
+Raw OBD-II trip data is already uploaded into the system by default + User may add their own file following required format details.
 3. Feature Engineering
 Trip-level statistics and behavioural indicators are computed.
 4. Driving Pattern Detection
@@ -83,19 +83,7 @@ A lightweight Streamlit dashboard brings everything together:
 The goal is to make technical driving data intuitive, visual, and motivating, rather than overwhelming.
 
 # ✅ Current Progress
-So far, EcoGranite supports:
-- End-to-end data processing from CSV to feedback
-- Trip-level efficiency scoring
-- Multiple driving pattern detectors
-- AI-generated coaching text
-- Interactive dashboard with filters and traces
-
 The system is now fully functional for trip analysis.
-
-# 🔮 What’s Next
-Upcoming work focuses on:
-- Preparing final report and demo material
-
 
 # 💬 Final Thoughts
 EcoGranite explores how AI can translate low-level sensor data into meaningful behavioural feedback : not just predictions, but explanations and guidance.
