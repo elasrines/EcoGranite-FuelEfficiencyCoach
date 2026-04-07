@@ -8,6 +8,8 @@ import json
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+import os
+import requests
 
 
 # =========================
@@ -185,6 +187,128 @@ def load_trip_stats() -> pd.DataFrame:
     return pd.read_csv(DATA_DIR / "trip_summary_stats.csv")
 
 
+def normalize_uploaded_obd_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Normalize common uploaded/raw KIT-style column names to the names used by the dashboard.
+    """
+    if df.empty:
+        return df
+
+    df = df.copy()
+
+    rename_map = {
+        "engine_rpm_[rpm]": "RPM",
+        "vehicle_speed_sensor_[km/h]": "Speed_kmh",
+        "air_flow_rate_from_mass_flow_sensor_[g/s]": "MAF_g_s",
+        "time": "Timestamp",
+        "gps_time": "Timestamp",
+        "source": "source_file",
+        "trip": "source_file",
+        "trip_id": "source_file",
+    }
+
+    existing_map = {old: new for old, new in rename_map.items() if old in df.columns and new not in df.columns}
+    if existing_map:
+        df = df.rename(columns=existing_map)
+
+    return df
+
+
+def build_trip_stats_from_obd(obd_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Build a lightweight trip summary directly from the uploaded OBD dataframe,
+    so the trip dropdown and dashboard reflect uploaded files instead of demo stats.
+    """
+    if obd_df.empty:
+        return pd.DataFrame()
+
+    df = normalize_uploaded_obd_columns(obd_df)
+
+    if "source_file" not in df.columns:
+        df = df.copy()
+        df["source_file"] = "uploaded_trip"
+
+    rpm_col = find_first_col(df, ["RPM", "engine_rpm", "EngineRPM"])
+    speed_col = find_first_col(df, ["Speed_kmh", "speed_kmh", "Speed", "speed", "SPEED", "vehicle_speed", "vss"])
+    fuel_col = find_first_col(
+        df,
+        ["Avg_Fuel_L/100km", "L_per_100km", "fuel_L_s", "fuel_rate", "FuelRate", "FUEL_RATE", "fuel_rate_l_h", "fuel_consumption"],
+    )
+
+    rows: list[dict] = []
+
+    for trip_id, trip_df in df.groupby("source_file", dropna=False):
+        trip_df = trip_df.copy()
+
+        row: dict = {"Trip": trip_id}
+
+        # Avg speed
+        if speed_col and speed_col in trip_df.columns:
+            row["Avg_Speed_kmh"] = pd.to_numeric(trip_df[speed_col], errors="coerce").mean()
+        else:
+            row["Avg_Speed_kmh"] = pd.NA
+
+        # Avg RPM
+        if rpm_col and rpm_col in trip_df.columns:
+            rpm_series = pd.to_numeric(trip_df[rpm_col], errors="coerce")
+            row["Avg_RPM"] = rpm_series.mean()
+        else:
+            rpm_series = pd.Series(dtype=float)
+            row["Avg_RPM"] = pd.NA
+
+        # Fuel
+        if fuel_col and fuel_col in trip_df.columns:
+            fuel_series = pd.to_numeric(trip_df[fuel_col], errors="coerce")
+            row["Avg_Fuel_L/100km"] = fuel_series.mean()
+        else:
+            fuel_series = pd.Series(dtype=float)
+            row["Avg_Fuel_L/100km"] = pd.NA
+
+        # High RPM at low speed %
+        if not rpm_series.empty and speed_col and speed_col in trip_df.columns:
+            speed_series = pd.to_numeric(trip_df[speed_col], errors="coerce")
+            valid_mask = rpm_series.notna() & speed_series.notna()
+            if valid_mask.any():
+                inefficient_mask = (rpm_series > 3000) & (speed_series < 30)
+                row["HighRPM_LowSpeed_%"] = float(inefficient_mask[valid_mask].mean() * 100)
+            else:
+                row["HighRPM_LowSpeed_%"] = pd.NA
+        else:
+            row["HighRPM_LowSpeed_%"] = pd.NA
+
+        # Long idle time %
+        if speed_col and speed_col in trip_df.columns:
+            speed_series = pd.to_numeric(trip_df[speed_col], errors="coerce")
+            valid_speed = speed_series.notna()
+            if valid_speed.any():
+                idle_mask = speed_series <= 1
+                row["Long_Idle_Time_%"] = float(idle_mask[valid_speed].mean() * 100)
+            else:
+                row["Long_Idle_Time_%"] = pd.NA
+        else:
+            row["Long_Idle_Time_%"] = pd.NA
+
+        # Approx acceleration / braking event counts
+        if speed_col and speed_col in trip_df.columns:
+            speed_series = pd.to_numeric(trip_df[speed_col], errors="coerce").reset_index(drop=True)
+            delta = speed_series.diff()
+
+            row["Accel_Events"] = int((delta > 8).sum()) if not delta.empty else 0
+            row["Brake_Events"] = int((delta < -8).sum()) if not delta.empty else 0
+        else:
+            row["Accel_Events"] = pd.NA
+            row["Brake_Events"] = pd.NA
+
+        rows.append(row)
+
+    trip_stats_df = pd.DataFrame(rows)
+
+    if not trip_stats_df.empty:
+        trip_stats_df["Eco_Score"] = trip_stats_df.apply(compute_overall_eco_score, axis=1)
+
+    return trip_stats_df
+
+
 def load_granite_feedback() -> pd.DataFrame:
     path = DATA_DIR / "granite_trip_feedback.json"
     try:
@@ -202,6 +326,162 @@ def load_granite_feedback() -> pd.DataFrame:
         st.error(f"Failed to parse Granite feedback JSON: {e}")
         return pd.DataFrame()
 
+WATSONX_CHAT_URL = "https://us-south.ml.cloud.ibm.com/ml/v1/text/chat?version=2023-05-29"
+WATSONX_PROJECT_ID = "852aeb95-062b-40a1-b2fa-da7a22b9dba4"
+WATSONX_MODEL_ID = "ibm/granite-4-h-small"
+
+
+def safe_num(value, decimals: int = 2, fallback: str = "N/A") -> str:
+    if pd.isna(value):
+        return fallback
+    return f"{float(value):.{decimals}f}"
+
+
+def safe_int(value, fallback: str = "N/A") -> str:
+    if pd.isna(value):
+        return fallback
+    return str(int(value))
+
+
+def get_iam_access_token(api_key: str) -> str:
+    iam_url = "https://iam.cloud.ibm.com/identity/token"
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    data = {
+        "grant_type": "urn:ibm:params:oauth:grant-type:apikey",
+        "apikey": api_key,
+    }
+
+    r = requests.post(iam_url, headers=headers, data=data, timeout=30)
+    if r.status_code != 200:
+        raise Exception(f"IAM token error {r.status_code}: {r.text}")
+
+    return r.json()["access_token"]
+
+
+def build_live_granite_prompt(row: pd.Series) -> str:
+    eco_score = compute_overall_eco_score(row)
+    trip_label = classify_eco_status(eco_score)
+
+    penalties = compute_penalties(row)
+    ranked = sorted(penalties.items(), key=lambda kv: kv[1], reverse=True)
+
+    main_issue = ranked[0][0] if len(ranked) >= 1 else "No major issue detected"
+    second_issue = ranked[1][0] if len(ranked) >= 2 else "No second major issue detected"
+
+    insights = build_trip_insights(row)
+    good_items = [ins["title"] for ins in insights if ins["severity"] == "good"]
+    improve_items = [ins["title"] for ins in insights if ins["severity"] in ("warn", "bad")]
+
+    while len(good_items) < 2:
+        good_items.append("No additional strong positive detected")
+    while len(improve_items) < 2:
+        improve_items.append("No additional major improvement area detected")
+
+    return f"""
+You are writing coaching text for the EcoGranite dashboard.
+
+Important rules:
+- Use the dashboard assessment below as the source of truth.
+- Do not contradict the provided issues or strengths.
+- Do not say fuel use is good if the dashboard says fuel use is bad.
+- Use the exact metric values provided.
+- Return plain text only.
+- Do not use markdown.
+- Do not use asterisks.
+- Leave one blank line between sections.
+- Use exactly these section headers:
+Overview:
+Coaching Suggestions:
+Key Takeaway:
+
+Dashboard assessment:
+- Eco score: {eco_score:.1f}
+- Trip classification: {trip_label}
+- Main issue: {main_issue}
+- Second issue: {second_issue}
+
+Trip metrics:
+- Average speed: {safe_num(row.get('Avg_Speed_kmh'), 1)} km/h
+- Average RPM: {safe_num(row.get('Avg_RPM'), 0)}
+- Average fuel consumption: {safe_num(row.get('Avg_Fuel_L/100km'), 2)} L/100km
+- High RPM at low speed events: {safe_num(row.get('HighRPM_LowSpeed_%'), 2)}%
+- Long idling: {safe_num(row.get('Long_Idle_Time_%'), 2)}%
+- Acceleration events: {safe_int(row.get('Accel_Events'))}
+- Braking events: {safe_int(row.get('Brake_Events'))}
+
+What went well:
+- {good_items[0]}
+- {good_items[1]}
+
+What could improve:
+- {improve_items[0]}
+- {improve_items[1]}
+
+Write:
+1. An Overview of 3 to 4 sentences.
+2. 4 bullet coaching suggestions.
+3. A Key Takeaway of 1 sentence.
+
+Do not invent new problems.
+Do not change the meaning of the dashboard assessment.
+""".strip()
+
+
+def call_granite(prompt_text: str, access_token: str, temperature: float = 0.2, max_tokens: int = 350) -> str:
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {access_token}",
+    }
+
+    body = {
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "You are EcoGranite, a fuel-efficiency driving coach. "
+                    "Give supportive, practical eco-driving feedback."
+                ),
+            },
+            {
+                "role": "user",
+                "content": prompt_text,
+            },
+        ],
+        "project_id": WATSONX_PROJECT_ID,
+        "model_id": WATSONX_MODEL_ID,
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+    }
+
+    r = requests.post(WATSONX_CHAT_URL, json=body, headers=headers, timeout=60)
+    if r.status_code != 200:
+        raise Exception(f"Granite error {r.status_code}: {r.text}")
+
+    return r.json()["choices"][0]["message"]["content"]
+
+
+@st.cache_data(show_spinner=False)
+def generate_live_granite_feedback(
+    trip_id: str,
+    prompt_text: str,
+    temperature: float = 0.2,
+) -> dict:
+    api_key = os.getenv("WATSONX_API_KEY")
+    if not api_key:
+        raise ValueError("WATSONX_API_KEY not found in environment.")
+
+    access_token = get_iam_access_token(api_key)
+    feedback = call_granite(prompt_text, access_token, temperature=temperature)
+
+    return {
+        "Trip": trip_id,
+        "prompt": prompt_text,
+        "feedback": feedback,
+        "temperature": temperature,
+        "model_id": WATSONX_MODEL_ID,
+        "source": "live",
+    }
 
 # =========================
 # SCORING & INSIGHTS
@@ -210,19 +490,21 @@ def load_granite_feedback() -> pd.DataFrame:
 def compute_overall_eco_score(row: pd.Series) -> float:
     score = 100.0
 
-    if "Avg_Fuel_L/100km" in row:
-        fuel = float(row["Avg_Fuel_L/100km"])
-        score -= min((fuel - 0.2) * 120, 35)
+    fuel = row.get("Avg_Fuel_L/100km")
+    if pd.notna(fuel):
+        score -= min((float(fuel) - 0.2) * 120, 35)
 
-    if "Long_Idle_Time_%" in row:
-        idle = float(row["Long_Idle_Time_%"])
-        score -= min(idle * 0.5, 30)
+    idle = row.get("Long_Idle_Time_%")
+    if pd.notna(idle):
+        score -= min(float(idle) * 0.5, 30)
 
-    if "Accel_Events" in row:
-        score -= min(float(row["Accel_Events"]) * 0.01, 15)
+    accel = row.get("Accel_Events")
+    if pd.notna(accel):
+        score -= min(float(accel) * 0.01, 15)
 
-    if "Brake_Events" in row:
-        score -= min(float(row["Brake_Events"]) * 0.01, 20)
+    brake = row.get("Brake_Events")
+    if pd.notna(brake):
+        score -= min(float(brake) * 0.01, 20)
 
     return float(max(0, min(100, score)))
 
@@ -743,9 +1025,12 @@ def main() -> None:
 
         use_demo = st.checkbox("Use demo dataset", value=True if not uploaded_file else False)
 
-        if uploaded_file is not None:
+        using_uploaded_data = uploaded_file is not None and not use_demo
+
+        if using_uploaded_data:
             try:
                 obd_df = pd.read_csv(uploaded_file)
+                obd_df = normalize_uploaded_obd_columns(obd_df)
             except Exception:
                 st.error("Could not read uploaded file as CSV.")
                 obd_df = pd.DataFrame()
@@ -757,14 +1042,16 @@ def main() -> None:
         st.caption("OBD-II columns:")
         st.code(", ".join(obd_df.columns), language="text")
 
-        trip_stats_df = load_trip_stats()
-        
-        # --- Precompute Eco Score for filtering ---
-        if not trip_stats_df.empty:
-            trip_stats_df = trip_stats_df.copy()
-            trip_stats_df["Eco_Score"] = trip_stats_df.apply(
-                compute_overall_eco_score, axis=1
-            )
+        if using_uploaded_data:
+            trip_stats_df = build_trip_stats_from_obd(obd_df)
+        else:
+            trip_stats_df = load_trip_stats()
+
+            if not trip_stats_df.empty:
+                trip_stats_df = trip_stats_df.copy()
+                trip_stats_df["Eco_Score"] = trip_stats_df.apply(
+                    compute_overall_eco_score, axis=1
+                )
 
         trip_id_col = find_first_col(trip_stats_df, ["Trip", "trip_id", "Trip_ID", "tripId", "trip"])
 
@@ -839,9 +1126,12 @@ def main() -> None:
     current_trip_row = get_selected_trip_row(filtered_trip_stats, selected_trip_id, trip_id_col)
 
     # ---------- PER-TRIP OBD DATA ----------
-    trip_obd_df = obd_df.copy()
-    if selected_trip_id is not None and "source_file" in trip_obd_df.columns:
-        trip_obd_df = trip_obd_df[trip_obd_df["source_file"] == selected_trip_id].copy()
+    trip_obd_df = normalize_uploaded_obd_columns(obd_df.copy())
+
+    if selected_trip_id is not None:
+        trip_source_col = find_first_col(trip_obd_df, ["source_file", "Trip", "trip_id", "trip"])
+        if trip_source_col:
+            trip_obd_df = trip_obd_df[trip_obd_df[trip_source_col] == selected_trip_id].copy()
 
     trip_obd_df, x_col = build_x_axis(trip_obd_df, selected_trip_id)
 
@@ -1014,30 +1304,54 @@ def main() -> None:
     elif selected_page == "Granite feedback":
         st.subheader("IBM Granite coaching")
 
+        if current_trip_row is None or selected_trip_id is None:
+            st.info("Select a trip first to see Granite coaching.")
+            return
+
         granite_df = load_granite_feedback()
-        if granite_df.empty:
-            st.info("Granite feedback will appear here once notebooks export `granite_trip_feedback.json`.")
-            return
-
         trip_feedback_df = granite_df.copy()
-        granite_trip_id_col = find_first_col(
-            trip_feedback_df,
-            ["Trip", "trip_id", "Trip_ID", "tripId", "trip"]
-        )
 
-        if selected_trip_id is not None and granite_trip_id_col:
-            trip_feedback_df = trip_feedback_df[
-                trip_feedback_df[granite_trip_id_col] == selected_trip_id
-            ]
+        if not trip_feedback_df.empty:
+            granite_trip_id_col = find_first_col(
+                trip_feedback_df,
+                ["Trip", "trip_id", "Trip_ID", "tripId", "trip"]
+            )
 
-        if trip_feedback_df.empty:
-            st.caption("No Granite feedback for this trip yet.")
-            return
+            if selected_trip_id is not None and granite_trip_id_col:
+                trip_feedback_df = trip_feedback_df[
+                    trip_feedback_df[granite_trip_id_col] == selected_trip_id
+                ]
 
-        row = trip_feedback_df.iloc[0]
-        prompt_text = row.get("prompt", "(no prompt available)")
-        feedback_text = row.get("feedback", "(no feedback available)")
-        temperature = row.get("temperature", None)
+        # 1) Use precomputed feedback if it exists
+        if not trip_feedback_df.empty:
+            row = trip_feedback_df.iloc[0]
+            prompt_text = row.get("prompt", "(no prompt available)")
+            feedback_text = row.get("feedback", "(no feedback available)")
+            temperature = row.get("temperature", 0.2)
+            feedback_source = "precomputed"
+
+        # 2) Otherwise generate live feedback for uploaded/custom trips
+        else:
+            try:
+                prompt_text = build_live_granite_prompt(current_trip_row)
+
+                with st.spinner("Generating live Granite coaching..."):
+                    live_result = generate_live_granite_feedback(
+                        trip_id=str(selected_trip_id),
+                        prompt_text=prompt_text,
+                        temperature=0.2,
+                    )
+
+                feedback_text = live_result["feedback"]
+                temperature = live_result["temperature"]
+                feedback_source = "live"
+
+            except Exception as e:
+                st.error(f"Could not generate Granite feedback for this trip: {e}")
+                st.caption(
+                    "Make sure WATSONX_API_KEY is set in your environment and your IBM project/model access is valid."
+                )
+                return
 
         st.markdown("**Granite coaching (AI response)**")
 
@@ -1073,7 +1387,7 @@ def main() -> None:
             unsafe_allow_html=True,
         )
 
-        meta_bits = [f"Model: IBM Granite (granite-4-h-small)"]
+        meta_bits = [f"Model: IBM Granite ({WATSONX_MODEL_ID})", f"Source: {feedback_source}"]
         if temperature is not None:
             meta_bits.append(f"Temperature: {temperature}")
 
