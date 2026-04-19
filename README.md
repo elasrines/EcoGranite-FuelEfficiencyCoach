@@ -82,9 +82,6 @@ A lightweight Streamlit dashboard brings everything together:
  
 The goal is to make technical driving data intuitive, visual, and motivating, rather than overwhelming.
 
-# ✅ Current Progress
-The system is now fully functional for trip analysis.
-
 # 💬 Final Thoughts
 EcoGranite explores how AI can translate low-level sensor data into meaningful behavioural feedback : not just predictions, but explanations and guidance.
 If you’re interested in eco-driving, human-centred AI, or applied ML in mobility, feedback and discussion are very welcome (ines.elasri.23@ucl.ac.uk).
