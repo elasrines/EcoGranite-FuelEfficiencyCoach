@@ -6,8 +6,6 @@ EcoGranite Platform LIVE : https://ecogranite.streamlit.app/
 
 Project Blog (with Video) : https://project-blog-ecogranite.vercel.app
 
-Author: Ines El Asri (ines.elasri.23@ucl.ac.uk)
-
 # 🌱 Why EcoGranite?
 
 Modern vehicles generate huge amounts of telemetry data through OBD-II sensors — speed, RPM, airflow, throttle position, and more.
@@ -82,4 +80,3 @@ The goal is to make technical driving data intuitive, visual, and motivating, ra
 
 # 💬 Final Thoughts
 EcoGranite explores how AI can translate low-level sensor data into meaningful behavioural feedback : not just predictions, but explanations and guidance.
-If you’re interested in eco-driving, human-centred AI, or applied ML in mobility, feedback and discussion are very welcome (ines.elasri.23@ucl.ac.uk).
