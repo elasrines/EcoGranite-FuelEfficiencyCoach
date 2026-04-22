@@ -8,7 +8,7 @@ Project Blog (with Video) : https://project-blog-ecogranite.vercel.app
 
 # 🌱 Why EcoGranite?
 
-Modern vehicles generate huge amounts of telemetry data through OBD-II sensors — speed, RPM, airflow, throttle position, and more.
+Modern vehicles generate huge amounts of telemetry data through OBD-II sensors : speed, RPM, airflow, throttle position, and more.
 However, this data is rarely transformed into actionable feedback for drivers.
 EcoGranite aims to bridge this gap by converting raw driving data into clear, personalised eco-driving coaching, helping drivers reduce fuel consumption and improve driving efficiency.
 
